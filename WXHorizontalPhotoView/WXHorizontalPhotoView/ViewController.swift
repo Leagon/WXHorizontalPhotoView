@@ -18,7 +18,7 @@ class ViewController: UIViewController, WXHorizontalPhotoViewDataSource, WXHoriz
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        horizontalPhoto = WXHorizontalPhotoView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 200), dataSource:self, delegate:self)
+        horizontalPhoto = WXHorizontalPhotoView(frame: CGRectMake(0, 0, self.view.bounds.size.width, 200), dataSource:self, delegate:self)
         self.view.addSubview(horizontalPhoto)
     }
     

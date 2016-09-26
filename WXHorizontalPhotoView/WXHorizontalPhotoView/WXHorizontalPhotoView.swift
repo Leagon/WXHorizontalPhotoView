@@ -103,7 +103,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         
         initializeSetup()
         setupScrollView()
-        (0)
+        scrollViewDidScrollToIndex(0)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -169,7 +169,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         }
         
         let scrollIndex = scrollIndexFromPageIndex(index)
-        scrollView.setContentOffset(CGPoint( x: CGFloat( Int(self.bounds.size.width) * scrollIndex ) , y: 0), animated: true)
+        scrollView.setContentOffset(CGPointMake(CGFloat( Int(self.bounds.size.width) * scrollIndex ) , 0), animated: true)
     }
     
     //MARK: - auto scroll
