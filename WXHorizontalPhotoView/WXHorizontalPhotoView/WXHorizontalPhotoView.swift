@@ -34,22 +34,10 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
     private var scrollView = UIScrollView(frame: CGRect.zero)
     private var photoViews = [PhotoView]()
     private var allPhotoImageViews:[UIImageView] {
-        get {
-            var imageViews = [UIImageView]()
-            for photoView in photoViews {
-                imageViews.append(photoView.imageView)
-            }
-            return imageViews
-        }
+        return photoViews.map { $0.imageView }
     }
     private var allPhotoBlurredImageViews:[UIImageView] {
-        get {
-            var imageViews = [UIImageView]()
-            for photoView in photoViews {
-                imageViews.append(photoView.blurredImageView)
-            }
-            return imageViews
-        }
+        return photoViews.map { $0.blurredImageView }
     }
     
     private var photoIndexView: WXHorizontalPhotoIndexView?
