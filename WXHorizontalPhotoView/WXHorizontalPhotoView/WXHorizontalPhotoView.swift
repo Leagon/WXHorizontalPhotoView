@@ -17,7 +17,7 @@ import UIKit
     @objc optional func horizontalPhotoViewShouldAutoScroll() -> Bool
     @objc optional func horizontalPhotoViewAutoScrollPeriodInSeconds() -> NSTimeInterval
     @objc optional func horizontalPhotoViewNeedBlurEffect() -> Bool
-    @objc optional func horizontalPhotoViewTappedAtIndex(index:Int, imageViews:[UIImageView])
+    @objc optional func horizontalPhotoViewTappedAtIndex(index:Int, imageView:UIImageView)
 }
 
 private let kHorizontalPhotoViewAutoScrollDefaultPeriodInSeconds: NSTimeInterval = 5
@@ -210,7 +210,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
     }
     
     func tapImageView(gesture:UITapGestureRecognizer) {
-        delegate?.horizontalPhotoViewTappedAtIndex?((gesture.view?.tag)!, imageViews: self.allPhotoImageViews)
+        delegate?.horizontalPhotoViewTappedAtIndex?((gesture.view?.tag)!, imageView: gesture.view as! UIImageView)
     }
     
     //MARK: - scroll view delegate

@@ -40,9 +40,20 @@ class ViewController: UIViewController, WXHorizontalPhotoViewDataSource, WXHoriz
         return 2.5
     }
     
-    func horizontalPhotoViewTappedAtIndex(index: Int, imageViews: [UIImageView]) {
-        print("index = \(index)")
+    func horizontalPhotoViewTappedAtIndex(index: Int, imageView: UIImageView) {
+        
         horizontalPhoto.pauseAutoScroll(true)
+        
+        let images = photos.map { UIImage(named: $0)! }
+        let vc = WXPhotoBrowserVC(images: images)
+        vc.animationView = imageView
+        vc.currentIndex = index
+        vc.dismissComplete = { [weak self] in
+            self?.horizontalPhoto.pauseAutoScroll(false)
+        }
+        vc.showPhotoBrowser(inViewController: self)
+        
+        
     }
 }
 

@@ -17,6 +17,8 @@
 		A21C78581D98D03A001DB523 /* first.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A21C78551D98D03A001DB523 /* first.jpg */; };
 		A21C78591D98D03A001DB523 /* second.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A21C78561D98D03A001DB523 /* second.jpg */; };
 		A21C785A1D98D03A001DB523 /* third.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A21C78571D98D03A001DB523 /* third.jpg */; };
+		A2BC548F1D98F6AC00DFC791 /* WXPhotoBrowserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BC548E1D98F6AC00DFC791 /* WXPhotoBrowserVC.swift */; };
+		A2BC54921D98F93A00DFC791 /* WXPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BC54911D98F93A00DFC791 /* WXPhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		A21C78551D98D03A001DB523 /* first.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = first.jpg; sourceTree = "<group>"; };
 		A21C78561D98D03A001DB523 /* second.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = second.jpg; sourceTree = "<group>"; };
 		A21C78571D98D03A001DB523 /* third.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = third.jpg; sourceTree = "<group>"; };
+		A2BC548E1D98F6AC00DFC791 /* WXPhotoBrowserVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WXPhotoBrowserVC.swift; sourceTree = "<group>"; };
+		A2BC54911D98F93A00DFC791 /* WXPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WXPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +70,8 @@
 			children = (
 				A21C783E1D98CFFD001DB523 /* AppDelegate.swift */,
 				A21C78401D98CFFD001DB523 /* ViewController.swift */,
-				A21C78501D98D02E001DB523 /* WXHorizontalPhotoIndexView.swift */,
-				A21C78511D98D02E001DB523 /* WXHorizontalPhotoView.swift */,
+				A2BC54901D98F6AF00DFC791 /* photoBrowserVC */,
+				A2BC548D1D98F65A00DFC791 /* horizontalPhotoView */,
 				A21C78541D98D03A001DB523 /* Image */,
 				A21C78421D98CFFD001DB523 /* Main.storyboard */,
 				A21C78451D98CFFD001DB523 /* Assets.xcassets */,
@@ -85,6 +89,24 @@
 				A21C78571D98D03A001DB523 /* third.jpg */,
 			);
 			path = Image;
+			sourceTree = "<group>";
+		};
+		A2BC548D1D98F65A00DFC791 /* horizontalPhotoView */ = {
+			isa = PBXGroup;
+			children = (
+				A21C78501D98D02E001DB523 /* WXHorizontalPhotoIndexView.swift */,
+				A21C78511D98D02E001DB523 /* WXHorizontalPhotoView.swift */,
+			);
+			name = horizontalPhotoView;
+			sourceTree = "<group>";
+		};
+		A2BC54901D98F6AF00DFC791 /* photoBrowserVC */ = {
+			isa = PBXGroup;
+			children = (
+				A2BC548E1D98F6AC00DFC791 /* WXPhotoBrowserVC.swift */,
+				A2BC54911D98F93A00DFC791 /* WXPhotoCollectionViewCell.swift */,
+			);
+			name = photoBrowserVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,7 +186,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2BC548F1D98F6AC00DFC791 /* WXPhotoBrowserVC.swift in Sources */,
 				A21C78531D98D02E001DB523 /* WXHorizontalPhotoView.swift in Sources */,
+				A2BC54921D98F93A00DFC791 /* WXPhotoCollectionViewCell.swift in Sources */,
 				A21C78411D98CFFD001DB523 /* ViewController.swift in Sources */,
 				A21C783F1D98CFFD001DB523 /* AppDelegate.swift in Sources */,
 				A21C78521D98D02E001DB523 /* WXHorizontalPhotoIndexView.swift in Sources */,

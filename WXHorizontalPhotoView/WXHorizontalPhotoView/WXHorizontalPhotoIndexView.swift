@@ -135,6 +135,17 @@ extension UIView {
         }
     }
     
+    var width:CGFloat {
+        get {
+            return self.frame.size.width
+        }
+        set {
+            var newFrame = self.frame
+            newFrame.size.width = newValue
+            self.frame = newFrame
+        }
+    }
+    
     var x:CGFloat {
         get {
             return self.frame.origin.x
