@@ -10,17 +10,17 @@ import UIKit
 
 @objc protocol WXHorizontalPhotoViewDataSource {
     func numberOfPhotos() -> Int
-    func horizontalPhotoViewEachPhotoAtIndex(_ index:Int) -> UIImage?
+    func horizontalPhotoViewEachPhotoAtIndex(index:Int) -> UIImage?
 }
 
 @objc protocol WXHorizontalPhotoViewDelegate {
     @objc optional func horizontalPhotoViewShouldAutoScroll() -> Bool
-    @objc optional func horizontalPhotoViewAutoScrollPeriodInSeconds() -> TimeInterval
+    @objc optional func horizontalPhotoViewAutoScrollPeriodInSeconds() -> NSTimeInterval
     @objc optional func horizontalPhotoViewNeedBlurEffect() -> Bool
-    @objc optional func horizontalPhotoViewTappedAtIndex(_ index:Int, imageViews:[UIImageView])
+    @objc optional func horizontalPhotoViewTappedAtIndex(index:Int, imageViews:[UIImageView])
 }
 
-private let kHorizontalPhotoViewAutoScrollDefaultPeriodInSeconds: TimeInterval = 5
+private let kHorizontalPhotoViewAutoScrollDefaultPeriodInSeconds: NSTimeInterval = 5
 private let kHorozontalPhotoViewInfiniteScrollMinPhotoCount:Int = 3
 
 enum WXHorizontalPhotoScrollOrientation {
@@ -31,9 +31,9 @@ enum WXHorizontalPhotoScrollOrientation {
 class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
     
     //MARK: - ui property
-    fileprivate var scrollView = UIScrollView(frame: CGRect.zero)
-    fileprivate var photoViews = [PhotoView]()
-    fileprivate var allPhotoImageViews:[UIImageView] {
+    private var scrollView = UIScrollView(frame: CGRect.zero)
+    private var photoViews = [PhotoView]()
+    private var allPhotoImageViews:[UIImageView] {
         get {
             var imageViews = [UIImageView]()
             for photoView in photoViews {
@@ -42,7 +42,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
             return imageViews
         }
     }
-    fileprivate var allPhotoBlurredImageViews:[UIImageView] {
+    private var allPhotoBlurredImageViews:[UIImageView] {
         get {
             var imageViews = [UIImageView]()
             for photoView in photoViews {
@@ -52,25 +52,25 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         }
     }
     
-    fileprivate var photoIndexView: WXHorizontalPhotoIndexView?
+    private var photoIndexView: WXHorizontalPhotoIndexView?
     
     //MARK: - data property
-    fileprivate var numberOfPhotos = 0
+    private var numberOfPhotos = 0
     weak var dataSource: WXHorizontalPhotoViewDataSource?
     
     // 默认循环时间5秒
-    fileprivate var autoScrollPeriodInSeconds = kHorizontalPhotoViewAutoScrollDefaultPeriodInSeconds
-    fileprivate var needBlurEffect = false
-    fileprivate var blurAlpha:CGFloat = 0
+    private var autoScrollPeriodInSeconds = kHorizontalPhotoViewAutoScrollDefaultPeriodInSeconds
+    private var needBlurEffect = false
+    private var blurAlpha:CGFloat = 0
     weak var delegate: WXHorizontalPhotoViewDelegate?
     
     // 无线循环机制开关 - 至少需要3张以上的图片
-    fileprivate var infiniteScrollEnable:Bool {
+    private var infiniteScrollEnable:Bool {
         get {
             return numberOfPhotos >= kHorozontalPhotoViewInfiniteScrollMinPhotoCount
         }
     }
-    fileprivate var leftMostImageViewPageIndex = 0
+    private var leftMostImageViewPageIndex = 0
     
     //MARK: - initialize
     init(frame: CGRect, dataSource: WXHorizontalPhotoViewDataSource?, delegate: WXHorizontalPhotoViewDelegate?) {
@@ -103,7 +103,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         
         initializeSetup()
         setupScrollView()
-        scrollViewDidScrollToIndex(0)
+        (0)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -122,10 +122,10 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         photoIndexView?.y = self.bounds.size.height - 30
     }
     
-    fileprivate func setupScrollView() {
+    private func setupScrollView() {
         scrollView.frame = self.bounds
         scrollView.contentSize = CGSize( width: CGFloat(Int(self.bounds.size.width) * numberOfPhotos), height: self.bounds.size.height)
-        scrollView.isPagingEnabled = true
+        scrollView.pagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.delegate = self
@@ -136,24 +136,24 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         self.addSubview(photoIndexView!)
     }
     
-    fileprivate func setupPhotoViews() {
+    private func setupPhotoViews() {
         for i in 0..<numberOfPhotos {
             let photoView = PhotoView(frame: CGRect( x: CGFloat(Int(self.bounds.size.width) * i), y: 0, width: self.bounds.size.width, height: self.bounds.size.height), tag: i, needBlur: true) as PhotoView
             scrollView.addSubview(photoView)
             photoViews.append(photoView)
-            photoView.imageView.isUserInteractionEnabled = true
+            photoView.imageView.userInteractionEnabled = true
             photoView.imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WXHorizontalPhotoView.tapImageView(_:))))
         }
     }
     
     //MARK: - public func
-    fileprivate var autoScrollPause = false
+    private var autoScrollPause = false
     
-    func pauseAutoScroll(_ pause:Bool) {
+    func pauseAutoScroll(pause:Bool) {
         autoScrollPause = pause
     }
     
-    func activeBlurEffectWithAlpha(_ alpha:CGFloat) {
+    func activeBlurEffectWithAlpha(alpha:CGFloat) {
         if needBlurEffect {
             blurAlpha = alpha
             
@@ -163,7 +163,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         }
     }
     
-    func scrollToPhotoAtPageIndex(_ index:Int) {
+    func scrollToPhotoAtPageIndex(index:Int) {
         if index > numberOfPhotos - 1 {
             return
         }
@@ -174,29 +174,29 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
     
     //MARK: - auto scroll
     
-    fileprivate var autoScrollTimer:Timer!
+    private var autoScrollTimer: NSTimer!
     
-    fileprivate func shouldEnableAutoScroll() -> Bool {
+    private func shouldEnableAutoScroll() -> Bool {
         return infiniteScrollEnable && autoScrollPeriodInSeconds != 0
     }
     
-    fileprivate func setupAutoScrollTimer() {
+    private func setupAutoScrollTimer() {
         guard shouldEnableAutoScroll() else {
             return
         }
         startAutoScrollTimer()
     }
     
-    fileprivate func startAutoScrollTimer() {
-        if autoScrollTimer != nil && autoScrollTimer.isValid {
+    private func startAutoScrollTimer() {
+        if autoScrollTimer != nil && autoScrollTimer.valid {
             return
         }
-        
-        autoScrollTimer = Timer.scheduledTimer(timeInterval: autoScrollPeriodInSeconds, target: self, selector: #selector(WXHorizontalPhotoView.autoScrollPhoto), userInfo: nil, repeats: true)
+
+        NSTimer.scheduledTimerWithTimeInterval(autoScrollPeriodInSeconds, target: self, selector: #selector(WXHorizontalPhotoView.autoScrollPhoto), userInfo: nil, repeats: true)
     }
     
-    fileprivate func stopAutoScrollTimer() {
-        if autoScrollTimer.isValid {
+    private func stopAutoScrollTimer() {
+        if autoScrollTimer.valid {
             autoScrollTimer.invalidate()
         }
     }
@@ -209,7 +209,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         }
         
         //如果scrollView当前正在被用户操作，或者处于减速状态，忽略此次autoScroll
-        if scrollView.isDragging || scrollView.isTracking || scrollView.isDecelerating {
+        if scrollView.dragging || scrollView.tracking || scrollView.decelerating {
             return
         }
         
@@ -221,12 +221,12 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         scrollView.setContentOffset(CGPoint( x: CGFloat( Int(self.bounds.size.width) * index ) , y: 0), animated: true)
     }
     
-    func tapImageView(_ gesture:UITapGestureRecognizer) {
+    func tapImageView(gesture:UITapGestureRecognizer) {
         delegate?.horizontalPhotoViewTappedAtIndex?((gesture.view?.tag)!, imageViews: self.allPhotoImageViews)
     }
     
     //MARK: - scroll view delegate
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if decelerate {
             return
         }
@@ -235,19 +235,19 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         scrollViewDidScrollToIndex(index)
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         let index = Int( scrollView.contentOffset.x / self.bounds.size.width )
         scrollViewDidScrollToIndex(index)
     }
     
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         let index = Int( scrollView.contentOffset.x / self.bounds.size.width )
         scrollViewDidScrollToIndex(index)
     }
     
     // MARK: - show image
     
-    fileprivate func scrollViewDidScrollToIndex(_ index:Int) {
+    private func scrollViewDidScrollToIndex(index:Int) {
         
         var internalIndex = index
         
@@ -276,7 +276,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         photoIndexView?.updateToNewPageIndex(pageIndexFromScrollIndex(internalIndex))
     }
     
-    fileprivate func relayoutImageViewsForInfiniteScrollToOrientation(_ orientation: WXHorizontalPhotoScrollOrientation) {
+    private func relayoutImageViewsForInfiniteScrollToOrientation(orientation: WXHorizontalPhotoScrollOrientation) {
         var originContentOffset = scrollView.contentOffset
         
         switch orientation {
@@ -309,7 +309,7 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         }
     }
     
-    fileprivate func showImageAtPageIndex(_ index:Int) {
+    private func showImageAtPageIndex(index:Int) {
         guard photoViews[index].imageViewFirstShow else {
             return
         }
@@ -325,11 +325,11 @@ class WXHorizontalPhotoView: UIView, UIScrollViewDelegate {
         imageView.image = photoResource
     }
     
-    fileprivate func pageIndexFromScrollIndex(_ scrollIndex:Int) -> Int {
+    private func pageIndexFromScrollIndex(scrollIndex:Int) -> Int {
         return (leftMostImageViewPageIndex + scrollIndex) % numberOfPhotos
     }
     
-    fileprivate func scrollIndexFromPageIndex(_ pageIndex:Int) -> Int {
+    private func scrollIndexFromPageIndex(pageIndex:Int) -> Int {
         return (pageIndex + numberOfPhotos - leftMostImageViewPageIndex) % numberOfPhotos
     }
 }

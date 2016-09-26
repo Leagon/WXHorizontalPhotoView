@@ -28,7 +28,7 @@ class ViewController: UIViewController, WXHorizontalPhotoViewDataSource, WXHoriz
         return 3
     }
     
-    func horizontalPhotoViewEachPhotoAtIndex(_ index: Int) -> UIImage? {
+    func horizontalPhotoViewEachPhotoAtIndex(index: Int) -> UIImage? {
         return UIImage(named: photos[index])
     }
     
@@ -36,11 +36,11 @@ class ViewController: UIViewController, WXHorizontalPhotoViewDataSource, WXHoriz
         return true
     }
     
-    func horizontalPhotoViewAutoScrollPeriodInSeconds() -> TimeInterval {
+    func horizontalPhotoViewAutoScrollPeriodInSeconds() -> NSTimeInterval {
         return 2.5
     }
     
-    func horizontalPhotoViewTappedAtIndex(_ index: Int, imageViews: [UIImageView]) {
+    func horizontalPhotoViewTappedAtIndex(index: Int, imageViews: [UIImageView]) {
         print("index = \(index)")
         horizontalPhoto.pauseAutoScroll(true)
     }

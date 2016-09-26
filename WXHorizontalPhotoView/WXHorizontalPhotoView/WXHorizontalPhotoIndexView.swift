@@ -13,12 +13,12 @@ private let kIndexRoundGap:CGFloat = 10
 private let kYOffset:CGFloat = 10
 
 class WXHorizontalPhotoIndexView: UIView {
-    fileprivate var indexRoundShapes = [CAShapeLayer]()
-    fileprivate var currentIndex:Int
-    fileprivate var maxIndex:Int
-    fileprivate var selectedColor:UIColor
-    fileprivate var normalColor:UIColor
-    fileprivate var strokeColor:UIColor?
+    private var indexRoundShapes = [CAShapeLayer]()
+    private var currentIndex:Int
+    private var maxIndex:Int
+    private var selectedColor:UIColor
+    private var normalColor:UIColor
+    private var strokeColor:UIColor?
     
     init(frame:CGRect, maxIndex:Int, currentIndex:Int, selectedColor:UIColor, normalColor:UIColor, strokeColor:UIColor?) {
         
@@ -30,23 +30,23 @@ class WXHorizontalPhotoIndexView: UIView {
         
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.clear
+        self.backgroundColor = UIColor.clearColor()
         
         let yPosition = self.frame.size.height - kIndexRoundRadius - kYOffset
         for i in 0..<maxIndex {
             let round = CAShapeLayer()
-            round.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: kIndexRoundRadius * 2, height: kIndexRoundRadius * 2)).cgPath
+            round.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, kIndexRoundRadius * 2, kIndexRoundRadius * 2)).CGPath
             
             let xPosition = frame.size.width/2 - ( CGFloat(maxIndex) * kIndexRoundGap + CGFloat(maxIndex + 1)*kIndexRoundRadius/2 ) + CGFloat(i) * (kIndexRoundGap + kIndexRoundRadius)
             
             round.frame = CGRect(x: xPosition, y: yPosition, width: kIndexRoundRadius * 2, height: kIndexRoundRadius * 2)
             
             if currentIndex == i {
-                round.fillColor = selectedColor.cgColor
-                round.strokeColor = selectedColor.cgColor
+                round.fillColor = selectedColor.CGColor
+                round.strokeColor = selectedColor.CGColor
             } else {
-                round.fillColor = normalColor.cgColor
-                round.strokeColor = strokeColor?.cgColor ?? normalColor.cgColor
+                round.fillColor = normalColor.CGColor
+                round.strokeColor = strokeColor?.CGColor ?? normalColor.CGColor
             }
             
             self.layer.addSublayer(round)
@@ -62,16 +62,16 @@ class WXHorizontalPhotoIndexView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateToNewPageIndex(_ newIndex:Int) {
+    func updateToNewPageIndex(newIndex:Int) {
         if newIndex == self.currentIndex {
             return
         }
         
-        indexRoundShapes[currentIndex].fillColor = normalColor.cgColor
-        indexRoundShapes[currentIndex].strokeColor = strokeColor?.cgColor ?? normalColor.cgColor
+        indexRoundShapes[currentIndex].fillColor = normalColor.CGColor
+        indexRoundShapes[currentIndex].strokeColor = strokeColor?.CGColor ?? normalColor.CGColor
         
-        indexRoundShapes[newIndex].fillColor = selectedColor.cgColor
-        indexRoundShapes[newIndex].strokeColor = selectedColor.cgColor
+        indexRoundShapes[newIndex].fillColor = selectedColor.CGColor
+        indexRoundShapes[newIndex].strokeColor = selectedColor.CGColor
         
         currentIndex = newIndex
     }
@@ -84,19 +84,19 @@ class PhotoView: UIView {
     
     var imageView = UIImageView(frame: CGRect.zero)
     var blurredImageView = UIImageView(frame: CGRect.zero)
-    var loadingImageIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    var loadingImageIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var imageViewFirstShow = true
     
     init(frame:CGRect, tag:Int, needBlur:Bool) {
         super.init(frame: frame)
         
         imageView.frame = self.bounds
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .ScaleAspectFill
         imageView.clipsToBounds = true
         imageView.tag = tag
         
         blurredImageView.frame = self.bounds
-        blurredImageView.contentMode = .scaleAspectFill
+        blurredImageView.contentMode = .ScaleAspectFill
         blurredImageView.clipsToBounds = true
         
         loadingImageIndicatorView.frame = CGRect( x: (self.bounds.size.width - kPhotoViewSpinViewSize)/2, y: (self.bounds.size.height - kPhotoViewSpinViewSize)/2, width: kPhotoViewSpinViewSize, height: kPhotoViewSpinViewSize)
